@@ -1,152 +1,153 @@
 package no.hvl.dat102.mengde;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+<<<<<<< HEAD
 import no.hvl.dat102.mengde.kjedet.*;
 import no.hvl.dat102.mengde.tabell.*;
 import o
+=======
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+>>>>>>> branch 'master' of https://github.com/587900/JAVA_INNLEVERING-DAT102-oblig2.git
 
-public class MengdeTest {
-	
-	private TabellMengde<Integer> m1;
+import no.hvl.dat102.mengde.adt.MengdeADT;
 
-	@Before
+public abstract class MengdeTest {
+
+	private MengdeADT<Integer> m1;
+	private MengdeADT<Integer> m2;
+
+	protected abstract MengdeADT<Integer> getNewMengde();
+
+	@BeforeEach
 	public final void setup() {
-		m1 = new TabellMengde<Integer>();
-		m1.leggTil(1);
-		m1.leggTil(2);
-        m1.leggTil(3);
-		m1.leggTil(4);
-	}
 
-	@Test
-	public final void unionTest() {
+		m1 = getNewMengde();
+		m2 = getNewMengde();
 
-		TabellMengde<Integer> m2 = new TabellMengde<Integer>();
-		m2.leggTil(5);
-		m2.leggTil(6);
-
-		TabellMengde<Integer> f = new TabellMengde<Integer>();
-		for (int i = 1; i < 7; i++)
-			f.leggTil(i);
-
-		assertTrue(f.equals(m2.union(m1)));
-	}
-
-	@Test
-	public final void snittTest() {
-		TabellMengde<Integer> m2 = new TabellMengde<Integer>();
-		m2.leggTil(1);
-		m2.leggTil(6);
-
-		TabellMengde<Integer> f = new TabellMengde<Integer>();
-		f.leggTil(1);
-
-		assertTrue(f.equals(m2.snitt(m1)));
+		for (int i = 3; i <= 8; i++) m1.leggTil(i);
 
 	}
 
 	@Test
-	public final void differensTest() {
-		TabellMengde<Integer> m2 = new TabellMengde<Integer>();
-		m2.leggTil(1);
-		m2.leggTil(2);
+	public final void unionLikTest() {
+		
+		for (int i = 3; i <= 8; i++) m2.leggTil(i);
 
-		TabellMengde<Integer> f = new TabellMengde<Integer>();
-		f.leggTil(4);
-		f.leggTil(3);
-
-		assertTrue(f.equals(m2.differens(m1)));
+		MengdeADT<Integer> fasit = getNewMengde();
+		for (int i = 3; i <= 8; i++) fasit.leggTil(i);
+		
+		assertTrue(fasit.equals(m1.union(m2)));
+		assertTrue(fasit.equals(m2.union(m1)));
 	}
 
-private KjedetMengde<Integer> m1;
+	@Test
+	public final void unionUlikTest1() {
 
-@Before
-public final void setup() {
-	m1 = new KjedetMengde<Integer>();
-	m1.leggTil(1);
-	m1.leggTil(2);
-	m1.leggTil(3);
-	m1.leggTil(4);
-}
+		for (int i = 1; i <= 5; i++) m2.leggTil(i);
 
-@Test
-public final void unionTest() {
+		MengdeADT<Integer> fasit = getNewMengde();
+		for (int i = 3; i <= 8; i++) fasit.leggTil(i);
+		
+		assertFalse(fasit.equals(m1.union(m2)));
+		assertFalse(fasit.equals(m2.union(m1)));
 
-	KjedetMengde<Integer> m2 = new KjedetMengde<Integer>();
-	m2.leggTil(5);
-	m2.leggTil(6);
+	}
 
-	KjedetMengde<Integer> f = new KjedetMengde<Integer>();
-	for (int i = 1; i < 7; i++)
-		f.leggTil(i);
+	@Test
+	public final void unionUlikTest2() {
 
-	assertTrue(f.equals(m2.union(m1)));
-}
+		for (int i = 1; i <= 5; i++) m2.leggTil(i);
 
-@Test
-public final void unionTestFelles() {
+		MengdeADT<Integer> fasit = getNewMengde();
+		for (int i = 1; i <= 8; i++) fasit.leggTil(i);
+		
+		assertTrue(fasit.equals(m1.union(m2)));
+		assertTrue(fasit.equals(m2.union(m1)));
 
-	KjedetMengde<Integer> m2 = new KjedetMengde<Integer>();
-	m2.leggTil(1);
-	m2.leggTil(2);
+	}
 
-	KjedetMengde<Integer> f = new KjedetMengde<Integer>();
-	for (int i = 1; i < 5; i++)
-		f.leggTil(i);
+	
+	@Test
+	public final void snittLikTest() {
+		for (int i = 3; i <= 8; i++) m2.leggTil(i);
 
-	assertTrue(f.equals(m2.union(m1)));
-}
+		MengdeADT<Integer> fasit = getNewMengde();
+		for (int i = 3; i <= 8; i++) fasit.leggTil(i);
 
-@Test
-public final void snittTest() {
-	KjedetMengde<Integer> m2 = new KjedetMengde<Integer>();
-	m2.leggTil(1);
-	m2.leggTil(6);
+		assertTrue(fasit.equals(m1.snitt(m2)));
+		assertTrue(fasit.equals(m2.snitt(m1)));
 
-	KjedetMengde<Integer> f = new KjedetMengde<Integer>();
-	f.leggTil(1);
+	}
 
-	assertTrue(f.equals(m2.snitt(m1)));
+	@Test
+	public final void snittUlikTest1() {
+		for (int i = 9; i <= 15; i++) m2.leggTil(i);
 
-}
+		MengdeADT<Integer> fasit = getNewMengde();
 
-@Test
-public final void snittTestDis() {
-	KjedetMengde<Integer> m2 = new KjedetMengde<Integer>();
-	m2.leggTil(5);
-	m2.leggTil(6);
+		assertTrue(fasit.equals(m1.snitt(m2)));
+		assertTrue(fasit.equals(m2.snitt(m1)));
+		assertTrue(m1.snitt(m2).erTom());
+		assertTrue(m2.snitt(m1).erTom());
 
-	KjedetMengde<Integer> f = new KjedetMengde<Integer>();
+	}
 
-	assertTrue(f.equals(m2.snitt(m1)));
+	@Test
+	public final void snittUlikTest2() {
+		for (int i = 1; i <= 5; i++) m2.leggTil(i);
 
-}
+		MengdeADT<Integer> fasit = getNewMengde();
+		for (int i = 3; i <= 5; i++) fasit.leggTil(i);
+		
+		assertTrue(fasit.equals(m1.snitt(m2)));
+		assertTrue(fasit.equals(m2.snitt(m1)));
 
-@Test
-public final void differensTest() {
-	KjedetMengde<Integer> m2 = new KjedetMengde<Integer>();
-	m2.leggTil(1);
-	m2.leggTil(2);
+	}
+	
+	@Test
+	public final void differensLikTest() {
+		for (int i = 3; i <= 8; i++) m2.leggTil(i);
 
-	KjedetMengde<Integer> f = new KjedetMengde<Integer>();
-	f.leggTil(4);
-	f.leggTil(3);
+		MengdeADT<Integer> fasit = getNewMengde();
+		
+		assertTrue(fasit.equals(m1.differens(m2)));
+		assertTrue(fasit.equals(m2.differens(m1)));
+		assertTrue(m1.differens(m2).erTom());
+		assertTrue(m2.differens(m1).erTom());
 
-	assertTrue(f.equals(m2.differens(m1)));
-}
+	}
 
-@Test
-public final void differensTestDis() {
-	KjedetMengde<Integer> m2 = new KjedetMengde<Integer>();
-	m2.leggTil(5);
-	m2.leggTil(6);
+	@Test
+	public final void differensUlikTest1() {
+		for (int i = 9; i <= 15; i++) m2.leggTil(i);
 
-	KjedetMengde<Integer> f = new KjedetMengde<Integer>();
-	f.leggTilAlle(m1);
-
-	assertTrue(f.equals(m2.differens(m1)));
-}
+		MengdeADT<Integer> fasit1 = getNewMengde();
+		for (int i = 3; i <= 8; i++) fasit1.leggTil(i);
+		
+		MengdeADT<Integer> fasit2 = getNewMengde();
+		for (int i = 9; i <= 15; i++) fasit2.leggTil(i);
+		
+		assertTrue(fasit1.equals(m1.differens(m2)));
+		assertTrue(fasit2.equals(m2.differens(m1)));
 		
 	}
+	
+	@Test
+	public final void differensUlikTest2() {
+		for (int i = 1; i <= 5; i++) m2.leggTil(i);
+
+		MengdeADT<Integer> fasit1 = getNewMengde();
+		for (int i = 6; i <= 8; i++) fasit1.leggTil(i);
+		
+		MengdeADT<Integer> fasit2 = getNewMengde();
+		for (int i = 1; i <= 2; i++) fasit2.leggTil(i);
+		
+		assertTrue(fasit1.equals(m1.differens(m2)));
+		assertTrue(fasit2.equals(m2.differens(m1)));
+		
+	}
+
+}
