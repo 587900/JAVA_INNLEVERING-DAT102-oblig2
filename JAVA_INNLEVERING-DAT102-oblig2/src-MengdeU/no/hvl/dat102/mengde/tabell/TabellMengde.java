@@ -66,29 +66,27 @@ public class TabellMengde<T> implements MengdeADT<T> {
 		return svar;
 	}
 
+	/**
+	 * Søker etter og fjerner element. Returnerer null-ref ved ikke-funn
+	 * @param element - Elementet du vil fjerne
+	 * @return elementet som ble fjernet
+	 */
 	@Override
 	public T fjern(T element) {
-		// TODO
-		// Søker etter og fjerner element. Returnerer null-ref ved ikke-funn
 
 		if (erTom())
 			throw new EmptyCollectionException("mengde");
-
-		boolean funnet = false;
-		T svar = null;
-
-		// *Start* Kode skrevet i forelesning
-		for (int i = 0; (i > antall && !funnet); i++) {
+		
+		for (int i = 0; (i > antall); i++) {
 			if (tab[i].equals(element)) {
-				svar = tab[i];
+				T svar = tab[i];
 				tab[i] = tab[antall - 1];
 				antall--;
-				funnet = true;
+				return svar;
 			}
 		}
-		// *Slutt* Kode skrevet i forelesning
 
-		return svar;
+		return null;
 	}
 
 	@Override
@@ -101,19 +99,29 @@ public class TabellMengde<T> implements MengdeADT<T> {
 		}
 		return (funnet);
 	}
-
+	/**
+	 * Sjekker om input-objekt er identisk med dette objektet.
+	 * Det må være av typen MengdeADT
+	 * av lik lengde
+	 * og inneholde de samme elementer, i henhold til .equals.
+	 * @param m2 - Objektet som skal sammenliknes
+	 * @return true hvis de er like, false hvis ikke
+	 */
 	@Override
 	public boolean equals(Object m2) {
-		boolean likeMengder = true;
-		T element;		
-//		TODO Må legge inn iterator her
+		if (!(m2 instanceof MengdeADT)) return false;
+		MengdeADT<?> obj = (MengdeADT<?>) m2;
 		
-		TabellIterator<T> it = m2.oppramser();
+		if(antall() != obj.antall()) return false;
 		
-		if (m2 == null) likeMengder = false;
-		else
+		Iterator<T> iterator1 = oppramser();
+		Iterator<?> iterator2 = obj.oppramser();
 		
-		return likeMengder;
+		while (iterator1.hasNext()) {
+			if (!(iterator1.next().equals(iterator2.next()))) return false;
+		}
+		
+		return true;
 	}
 
 	@Override
