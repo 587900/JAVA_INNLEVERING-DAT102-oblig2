@@ -1,4 +1,5 @@
 package no.hvl.dat102.mengde;
+
 import static org.junit.Assert.*;
 import org.junit.Test;
 
