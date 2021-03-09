@@ -1,9 +1,10 @@
 package no.hvl.dat102.mengde.klient;
 
+import java.util.Scanner;
+
 import no.hvl.dat102.mengde.adt.MengdeADT;
 import no.hvl.dat102.mengde.kjedet.KjedetMengde;
-
-import java.util.Scanner;
+import no.hvl.dat102.mengde.tabell.TabellMengde;
 
 public class Ordliste {
 
@@ -12,10 +13,10 @@ public class Ordliste {
 	 */
 	public static void main(String[] args) {
 
-		MengdeADT<String> ordListe1 = new KjedetMengde<String>();
+		MengdeADT<String> ordListe1 = new TabellMengde<String>();
 
 		String[] ord = { "God", "dag", "Hans", "Hansen", "Hansaby", "Olsen", "Ole", "buss", "rute", "Bergen" };
-
+		
 		Scanner tastatur = new Scanner(System.in);
 		// Legger til ordene i mengden ordListe1
 

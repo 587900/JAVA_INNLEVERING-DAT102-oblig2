@@ -4,11 +4,11 @@ import java.util.Iterator;
 import java.util.Random;
 
 import no.hvl.dat102.exception.EmptyCollectionException;
-import no.hvl.dat102.mengde.adt.*;
+import no.hvl.dat102.mengde.adt.MengdeADT;
 
 public class TabellMengde<T> implements MengdeADT<T> {
 	// ADT-en Mengde implementert som tabell
-	
+
 	private final static Random tilf = new Random();
 	private final static int STDK = 100;
 	private int antall;
@@ -68,6 +68,7 @@ public class TabellMengde<T> implements MengdeADT<T> {
 
 	/**
 	 * SÃ¸ker etter og fjerner element. Returnerer null-ref ved ikke-funn
+	 * 
 	 * @param element - Elementet du vil fjerne
 	 * @return elementet som ble fjernet
 	 */
@@ -76,7 +77,7 @@ public class TabellMengde<T> implements MengdeADT<T> {
 
 		if (erTom())
 			throw new EmptyCollectionException("fjern: Mengden er tom!");
-		
+
 		for (int i = 0; i < antall; i++) {
 			if (tab[i].equals(element)) {
 				T svar = tab[i];
@@ -99,28 +100,30 @@ public class TabellMengde<T> implements MengdeADT<T> {
 		}
 		return (funnet);
 	}
+
 	/**
-	 * Sjekker om input-objekt er identisk med dette objektet.
-	 * Det mÃ¥ vÃ¦re av typen MengdeADT
-	 * av lik lengde
-	 * og inneholde de samme elementer, i henhold til .equals.
+	 * Sjekker om input-objekt er identisk med dette objektet. Det må være av typen
+	 * MengdeADT av lik lengde og inneholde de samme elementer, i henhold til
+	 * .equals.
+	 * 
 	 * @param m2 - Objektet som skal sammenliknes
 	 * @return true hvis de er like, false hvis ikke
 	 */
 	@Override
 	public boolean equals(Object m2) {
-		if (!(m2 instanceof MengdeADT)) return false;
-		MengdeADT<?> obj = (MengdeADT<?>) m2;
-		
-		if(antall() != obj.antall()) return false;
-		
-		Iterator<T> iterator1 = oppramser();
-		Iterator<?> iterator2 = obj.oppramser();
-		
-		while (iterator1.hasNext()) {
-			if (!(iterator1.next().equals(iterator2.next()))) return false;
+		if (!(m2 instanceof MengdeADT<?>)) return false;
+		MengdeADT<T> obj;
+		try { obj = (MengdeADT<T>) m2; } catch (ClassCastException e) { return false; }
+
+		if (antall() != obj.antall())
+			return false;
+
+		Iterator<T> iterator = oppramser();
+
+		while (iterator.hasNext()) {
+			if (!obj.inneholder(iterator.next())) return false;
 		}
-		
+
 		return true;
 	}
 
@@ -132,55 +135,59 @@ public class TabellMengde<T> implements MengdeADT<T> {
 	}
 
 	/*
-	 * Denne versjonen av unionen er lite effekktiv
-	 * 
-	 * @Override public MengdeADT<T> union(MengdeADT<T> m2) { TabellMengde<T> begge
-	 * = new TabellMengde<T>(); for (int i = 0; i < antall; i++) {
-	 * begge.leggTil(tab[i]); } Iterator<T> teller = m2.oppramser();
-	 * 
-	 * while (teller.hasNext()) { begge.leggTil(teller.next()); } return
-	 * (MengdeADT<T>)begge; }
+	 * Unioniser nokre mengder
 	 */
 	@Override
-
 	public MengdeADT<T> union(MengdeADT<T> m2) {
-		MengdeADT<T> begge = new TabellMengde<T>();
-		T element = null;
-		/*
-		 * Fyll ut
-		 * 
-		 */
-		return begge;
-	}//
 
+		TabellMengde<T> begge = new TabellMengde<T>();
+		Iterator<T> iterator1 = oppramser();
+		while (iterator1.hasNext()) begge.leggTil(iterator1.next());
+		
+		Iterator<T> iterator2 = m2.oppramser();
+		while (iterator2.hasNext()) {
+			T element = iterator2.next();
+			if (!this.inneholder(element)) begge.settInn(element);
+		}
+
+		return begge;
+	}
+	
 	@Override
 	public MengdeADT<T> snitt(MengdeADT<T> m2) {
-		MengdeADT<T> snittM = new TabellMengde<T>();
-		T element = null;
-		/*
-		 * Fyll ut
-		 */
+		TabellMengde<T> snittM = new TabellMengde<T>();
+		
+		Iterator<T> iterator = oppramser();
+		while (iterator.hasNext()) {
+			T element = iterator.next();
+			if (m2.inneholder(element)) snittM.leggTil(element);
+		}
+		
 		return snittM;
 	}
-
+	
+	//O(n*m) n = antall element i m1, m = antall element i m2
+	//mulig O(n) + O(m) med hashmap
 	@Override
 	public MengdeADT<T> differens(MengdeADT<T> m2) {
-		MengdeADT<T> differensM = new TabellMengde<T>();
-		T element;
-		/*
-		 * Fyll ut
-		 * 
-		 * if (!m2.inneholder(element)) ((TabellMengde<T>) differensM).settInn(element);
-		 */
-
+		TabellMengde<T> differensM = new TabellMengde<T>();
+		
+		Iterator<T> iterator = oppramser();
+		while (iterator.hasNext()) {
+			T element = iterator.next();
+			if (!m2.inneholder(element)) differensM.leggTil(element);
+		}
+		
 		return differensM;
 	}
 
 	@Override
 	public boolean undermengde(MengdeADT<T> m2) {
-		boolean erUnderMengde = true;
-		// Fyll ut
-		return false;
+		Iterator<T> iterator = oppramser();
+		while (iterator.hasNext()) {
+			if (!m2.inneholder(iterator.next())) return false;
+		}
+		return true;
 	}
 
 	@Override

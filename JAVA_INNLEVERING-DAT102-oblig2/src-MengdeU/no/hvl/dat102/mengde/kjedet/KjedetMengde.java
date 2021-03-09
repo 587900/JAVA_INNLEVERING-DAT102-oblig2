@@ -120,26 +120,30 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 	
 	/**
 	 * Sjekker om input-objekt er identisk med dette objektet.
-	 * Det mÃ¥ vÃ¦re av typen MengdeADT
+	 * Det må være av typen MengdeADT
 	 * av lik lengde
 	 * og inneholde de samme elementer, i henhold til .equals.
+	 * 
+	 * Vi antar at rekkefølge på elementer er relevant (evt komme tilbake og godta duplikater)
 	 * @param m2 - Objektet som skal sammenliknes
 	 * @return true hvis de er like, false hvis ikke
 	 */
 	@Override
 	public boolean equals(Object m2) {
-		if (!(m2 instanceof MengdeADT)) return false;
-		MengdeADT<?> obj = (MengdeADT<?>) m2;
 		
-		if(antall() != obj.antall()) return false;
-		
-		Iterator<T> iterator1 = oppramser();
-		Iterator<?> iterator2 = obj.oppramser();
-		
-		while (iterator1.hasNext()) {
-			if (!(iterator1.next().equals(iterator2.next()))) return false;
+		if (!(m2 instanceof MengdeADT<?>)) return false;
+		MengdeADT<T> obj;
+		try { obj = (MengdeADT<T>) m2; } catch (ClassCastException e) { return false; }
+
+		if (antall() != obj.antall())
+			return false;
+
+		Iterator<T> iterator = oppramser();
+
+		while (iterator.hasNext()) {
+			if (!obj.inneholder(iterator.next())) return false;
 		}
-		
+
 		return true;
 	}
 
@@ -153,59 +157,68 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 		return antall;
 	}
 
+	/**
+	 * Matematisk union av 2 mengder (denne mengden og en gitt mengde)
+	 * Hvis et element er i en av mengdene, skal den vere med i retur-mengden
+	 * @param m2 - Mengden å unionisere med
+	 * @returns En unionisert mengde
+	 */
 	@Override
 	public MengdeADT<T> union(MengdeADT<T> m2) {
-		MengdeADT<T> begge = new KjedetMengde<T>();
-		LinearNode<T> aktuell = start;
-		T element = null;
-
-		// *Start* Kode skrevet i forelesning
-		while (aktuell != null) {// Ubetinget innsetting
-			((KjedetMengde<T>) begge).settInn(aktuell.getElement());
-			aktuell = aktuell.getNeste();
+		
+		//vi kunne også
+		//MengdeADT<T> begge = new KjedetMengde<T>();
+		//((KjedetMengde<T>)begge).settInn(element);
+		//men vi foretrekker følgende:
+		
+		KjedetMengde<T> begge = new KjedetMengde<T>();
+		Iterator<T> iterator1 = oppramser();
+		while (iterator1.hasNext()) begge.leggTil(iterator1.next());
+		
+		Iterator<T> iterator2 = m2.oppramser();
+		while (iterator2.hasNext()) {
+			T element = iterator2.next();
+			if (!this.inneholder(element)) begge.settInn(element);
 		}
-
-		Iterator<T> teller = m2.oppramser();
-		while (teller.hasNext()) {
-			element = teller.next();
-			if (!this.inneholder(element)) {// Tester mot "konstant" mengde
-				((KjedetMengde<T>) begge).settInn(element);
-			}
-		}
-		// *Slutt* Kode skrevet i forelesning
 
 		return begge;
-	}//
-
-	@Override
-	public MengdeADT<T> snitt(MengdeADT<T> m2) {
-		MengdeADT<T> snittM = new KjedetMengde<T>();
-		T element;
-		/*
-		 * Fyll ut...
-		 * 
-		 * if (this.inneholder(element)) ((KjedetMengde<T>) snittM).settInn(element);
-		 */
-		return snittM;
 	}
 
 	@Override
-	public MengdeADT<T> differens(MengdeADT<T> m2) {
-		MengdeADT<T> differensM = new KjedetMengde<T>();
-		T element;
-		/*
-		 * Fyll ut
-		 * 
-		 */
+	public MengdeADT<T> snitt(MengdeADT<T> m2) {
+		KjedetMengde<T> snittM = new KjedetMengde<T>();
+		
+		Iterator<T> iterator = oppramser();
+		while (iterator.hasNext()) {
+			T element = iterator.next();
+			if (m2.inneholder(element)) snittM.leggTil(element);
+		}
+		
+		return snittM;
+	}
 
+	//O(n*m) n = antall element i m1, m = antall element i m2
+	//mulig O(n) + O(m) med hashmap
+	@Override
+	public MengdeADT<T> differens(MengdeADT<T> m2) {
+		KjedetMengde<T> differensM = new KjedetMengde<T>();
+		
+		Iterator<T> iterator = oppramser();
+		while (iterator.hasNext()) {
+			T element = iterator.next();
+			if (!m2.inneholder(element)) differensM.leggTil(element);
+		}
+		
 		return differensM;
 	}
 
 	@Override
 	public boolean undermengde(MengdeADT<T> m2) {
-		boolean erUnderMengde = true;
-		// Fyll ut
-		return erUnderMengde;
+		Iterator<T> iterator = oppramser();
+		while (iterator.hasNext()) {
+			if (!m2.inneholder(iterator.next())) return false;
+		}
+		return true;
 	}
 
 	@Override
