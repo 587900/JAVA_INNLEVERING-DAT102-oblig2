@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import no.hvl.dat102.mengde.kjedet.*;
 import no.hvl.dat102.mengde.tabell.*;
-import org.junit.Before;
+import o
 
 public class MengdeTest {
 	
