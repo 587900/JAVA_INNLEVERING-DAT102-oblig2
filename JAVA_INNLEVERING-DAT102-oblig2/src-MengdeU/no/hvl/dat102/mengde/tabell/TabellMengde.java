@@ -75,9 +75,9 @@ public class TabellMengde<T> implements MengdeADT<T> {
 	public T fjern(T element) {
 
 		if (erTom())
-			throw new EmptyCollectionException("mengde");
+			throw new EmptyCollectionException("fjern: Mengden er tom!");
 		
-		for (int i = 0; (i > antall); i++) {
+		for (int i = 0; i < antall; i++) {
 			if (tab[i].equals(element)) {
 				T svar = tab[i];
 				tab[i] = tab[antall - 1];
