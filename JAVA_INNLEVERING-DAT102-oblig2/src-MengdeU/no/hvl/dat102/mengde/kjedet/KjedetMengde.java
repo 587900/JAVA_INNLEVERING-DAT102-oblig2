@@ -4,8 +4,6 @@ package no.hvl.dat102.mengde.kjedet;
 // Kjedet implementasjon av en mengde. 
 //********************************************************************
 import java.util.*;
-
-import Forelesninger.LinearNode;
 import no.hvl.dat102.exception.EmptyCollectionException;
 import no.hvl.dat102.mengde.adt.*;
 
@@ -65,39 +63,46 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 
 		return resultat;
 
-	}//
+	}
 
+	/**
+	 * Søker etter og fjerner element. Returnerer null-ref ved ikke-funn
+	 * @param element - Elementet du vil fjerne
+	 * @return elementet som ble fjernet
+	 */
 	@Override
 	public T fjern(T element) {
-
+		
+		//Check if empty
 		if (erTom())
-			throw new EmptyCollectionException("mengde");
-
-		boolean funnet = false;
-		LinearNode<T> forgjenger, aktuell;
-		T resultat = null;
-		// *Start* Kode skrevet i forelesning
-		if (start.getElement().equals(element)) { // Sletter foran
-			resultat = start.getElement();
+			throw new EmptyCollectionException("fjern: Mengden er tom!");
+		
+		//Sjekk startelement
+		if (start.getElement().equals(element)) {
+			T resultat = start.getElement();
 			start = start.getNeste();
 			antall--;
-		} else {// GJennomgår den kjedete strukturen
-			forgjenger = start;
-			aktuell = start.getNeste();
-			for (int sok = 2; sok <= antall && !funnet; sok++) {
-				if (aktuell.getElement().equals(element))
-					funnet = true;
-				else
-					forgjenger = aktuell.getNeste();
-			}
-			if (funnet)
-				resultat = aktuell.getElement();
-			forgjenger.setNeste(aktuell.getNeste()); // Slette midt inni eller bak
-			antall--;
+			return resultat;
 		}
-		// *Slutt* Kode skrevet i forelesning
-		return resultat;
-	}//
+		
+		//Sjekk resten av mengden
+		LinearNode<T> forgjenger, aktuell;
+		forgjenger = start;
+		aktuell = start.getNeste();
+		for (int sok = 2; sok <= antall; sok++) {
+			if (aktuell.getElement().equals(element)) {
+				forgjenger.setNeste(aktuell.getNeste());
+				antall--;
+				return aktuell.getElement();
+			}
+			
+			forgjenger = aktuell;
+			aktuell = aktuell.getNeste();
+		}
+		
+		//Fant ingen element
+		return null;
+	}
 
 	@Override
 	public boolean inneholder(T element) {
@@ -112,19 +117,30 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 		}
 		return funnet;
 	}
-
+	
+	/**
+	 * Sjekker om input-objekt er identisk med dette objektet.
+	 * Det må være av typen MengdeADT
+	 * av lik lengde
+	 * og inneholde de samme elementer, i henhold til .equals.
+	 * @param m2 - Objektet som skal sammenliknes
+	 * @return true hvis de er like, false hvis ikke
+	 */
 	@Override
 	public boolean equals(Object m2) {
-		boolean likeMengder = true;
-		T element = null;
-		Iterator<T> teller = m2.oppramser();
-		while (teller.hasNext() && likeMengder) {
-			T element = teller.next();
-			if (!this.inneholder(element)) {
-				likeMengder = false;
-			}
+		if (!(m2 instanceof MengdeADT)) return false;
+		MengdeADT<?> obj = (MengdeADT<?>) m2;
+		
+		if(antall() != obj.antall()) return false;
+		
+		Iterator<T> iterator1 = oppramser();
+		Iterator<?> iterator2 = obj.oppramser();
+		
+		while (iterator1.hasNext()) {
+			if (!(iterator1.next().equals(iterator2.next()))) return false;
 		}
-		return likeMengder;
+		
+		return true;
 	}
 
 	@Override

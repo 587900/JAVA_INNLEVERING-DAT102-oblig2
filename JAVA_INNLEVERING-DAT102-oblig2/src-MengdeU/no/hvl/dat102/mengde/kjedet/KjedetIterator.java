@@ -8,8 +8,6 @@ package no.hvl.dat102.mengde.kjedet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import Forelesninger.LinearNode;
-
 /**
  * @author ole olsen
  * 
