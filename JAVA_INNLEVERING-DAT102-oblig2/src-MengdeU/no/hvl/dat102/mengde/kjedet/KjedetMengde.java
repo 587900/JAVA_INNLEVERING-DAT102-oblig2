@@ -67,25 +67,26 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 
 	/**
 	 * SÃ¸ker etter og fjerner element. Returnerer null-ref ved ikke-funn
+	 * 
 	 * @param element - Elementet du vil fjerne
 	 * @return elementet som ble fjernet
 	 */
 	@Override
 	public T fjern(T element) {
-		
-		//Check if empty
+
+		// Check if empty
 		if (erTom())
 			throw new EmptyCollectionException("fjern: Mengden er tom!");
-		
-		//Sjekk startelement
+
+		// Sjekk startelement
 		if (start.getElement().equals(element)) {
 			T resultat = start.getElement();
 			start = start.getNeste();
 			antall--;
 			return resultat;
 		}
-		
-		//Sjekk resten av mengden
+
+		// Sjekk resten av mengden
 		LinearNode<T> forgjenger, aktuell;
 		forgjenger = start;
 		aktuell = start.getNeste();
@@ -95,12 +96,12 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 				antall--;
 				return aktuell.getElement();
 			}
-			
+
 			forgjenger = aktuell;
 			aktuell = aktuell.getNeste();
 		}
-		
-		//Fant ingen element
+
+		// Fant ingen element
 		return null;
 	}
 
@@ -117,23 +118,29 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 		}
 		return funnet;
 	}
-	
+
 	/**
-	 * Sjekker om input-objekt er identisk med dette objektet.
-	 * Det må være av typen MengdeADT
-	 * av lik lengde
-	 * og inneholde de samme elementer, i henhold til .equals.
+	 * Sjekker om input-objekt er identisk med dette objektet. Det mï¿½ vï¿½re av typen
+	 * MengdeADT av lik lengde og inneholde de samme elementer, i henhold til
+	 * .equals.
 	 * 
-	 * Vi antar at rekkefølge på elementer er relevant (evt komme tilbake og godta duplikater)
+	 * Vi antar at rekkefï¿½lge pï¿½ elementer er relevant (evt komme tilbake og godta
+	 * duplikater)
+	 * 
 	 * @param m2 - Objektet som skal sammenliknes
 	 * @return true hvis de er like, false hvis ikke
 	 */
 	@Override
 	public boolean equals(Object m2) {
-		
-		if (!(m2 instanceof MengdeADT<?>)) return false;
+
+		if (!(m2 instanceof MengdeADT<?>))
+			return false;
 		MengdeADT<T> obj;
-		try { obj = (MengdeADT<T>) m2; } catch (ClassCastException e) { return false; }
+		try {
+			obj = (MengdeADT<T>) m2;
+		} catch (ClassCastException e) {
+			return false;
+		}
 
 		if (antall() != obj.antall())
 			return false;
@@ -141,7 +148,8 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 		Iterator<T> iterator = oppramser();
 
 		while (iterator.hasNext()) {
-			if (!obj.inneholder(iterator.next())) return false;
+			if (!obj.inneholder(iterator.next()))
+				return false;
 		}
 
 		return true;
@@ -158,27 +166,30 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 	}
 
 	/**
-	 * Matematisk union av 2 mengder (denne mengden og en gitt mengde)
-	 * Hvis et element er i en av mengdene, skal den vere med i retur-mengden
-	 * @param m2 - Mengden å unionisere med
+	 * Matematisk union av 2 mengder (denne mengden og en gitt mengde) Hvis et
+	 * element er i en av mengdene, skal den vere med i retur-mengden
+	 * 
+	 * @param m2 - Mengden ï¿½ unionisere med
 	 * @returns En unionisert mengde
 	 */
 	@Override
 	public MengdeADT<T> union(MengdeADT<T> m2) {
-		
-		//vi kunne også
-		//MengdeADT<T> begge = new KjedetMengde<T>();
-		//((KjedetMengde<T>)begge).settInn(element);
-		//men vi foretrekker følgende:
-		
+
+		// vi kunne ogsï¿½
+		// MengdeADT<T> begge = new KjedetMengde<T>();
+		// ((KjedetMengde<T>)begge).settInn(element);
+		// men vi foretrekker fï¿½lgende:
+
 		KjedetMengde<T> begge = new KjedetMengde<T>();
 		Iterator<T> iterator1 = oppramser();
-		while (iterator1.hasNext()) begge.leggTil(iterator1.next());
-		
+		while (iterator1.hasNext())
+			begge.leggTil(iterator1.next());
+
 		Iterator<T> iterator2 = m2.oppramser();
 		while (iterator2.hasNext()) {
 			T element = iterator2.next();
-			if (!this.inneholder(element)) begge.settInn(element);
+			if (!this.inneholder(element))
+				begge.settInn(element);
 		}
 
 		return begge;
@@ -187,28 +198,30 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 	@Override
 	public MengdeADT<T> snitt(MengdeADT<T> m2) {
 		KjedetMengde<T> snittM = new KjedetMengde<T>();
-		
+
 		Iterator<T> iterator = oppramser();
 		while (iterator.hasNext()) {
 			T element = iterator.next();
-			if (m2.inneholder(element)) snittM.leggTil(element);
+			if (m2.inneholder(element))
+				snittM.leggTil(element);
 		}
-		
+
 		return snittM;
 	}
 
-	//O(n*m) n = antall element i m1, m = antall element i m2
-	//mulig O(n) + O(m) med hashmap
+	// O(n*m) n = antall element i m1, m = antall element i m2
+	// mulig O(n) + O(m) med hashmap
 	@Override
 	public MengdeADT<T> differens(MengdeADT<T> m2) {
 		KjedetMengde<T> differensM = new KjedetMengde<T>();
-		
+
 		Iterator<T> iterator = oppramser();
 		while (iterator.hasNext()) {
 			T element = iterator.next();
-			if (!m2.inneholder(element)) differensM.leggTil(element);
+			if (!m2.inneholder(element))
+				differensM.leggTil(element);
 		}
-		
+
 		return differensM;
 	}
 
@@ -216,7 +229,8 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 	public boolean undermengde(MengdeADT<T> m2) {
 		Iterator<T> iterator = oppramser();
 		while (iterator.hasNext()) {
-			if (!m2.inneholder(iterator.next())) return false;
+			if (!m2.inneholder(iterator.next()))
+				return false;
 		}
 		return true;
 	}
@@ -231,6 +245,16 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 		nyNode.setNeste(start);
 		start = nyNode;
 		antall++;
+	}
+
+	@Override
+	public String toString() {
+		String resultat = "";
+		Iterator<T> it = oppramser();
+		while (it.hasNext()) {
+			resultat += it.next().toString() + "\t";
+		}
+		return resultat;
 	}
 
 }// class

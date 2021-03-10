@@ -1,7 +1,9 @@
 package no.hvl.dat102.datasystem;
+
 import java.util.Scanner;
 
-public class DatasystemKlient {
+public class Datasystemklient {
+	
 	public static void main(String[] args) {
 		Scanner tastatur = new Scanner(System.in);
 		Datakontakt data = new Datakontakt();

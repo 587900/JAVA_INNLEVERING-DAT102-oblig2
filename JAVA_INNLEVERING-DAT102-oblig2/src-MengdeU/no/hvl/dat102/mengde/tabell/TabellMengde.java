@@ -102,7 +102,7 @@ public class TabellMengde<T> implements MengdeADT<T> {
 	}
 
 	/**
-	 * Sjekker om input-objekt er identisk med dette objektet. Det må være av typen
+	 * Sjekker om input-objekt er identisk med dette objektet. Det mï¿½ vï¿½re av typen
 	 * MengdeADT av lik lengde og inneholde de samme elementer, i henhold til
 	 * .equals.
 	 * 
@@ -202,5 +202,16 @@ public class TabellMengde<T> implements MengdeADT<T> {
 		tab[antall] = element;
 		antall++;
 	}
+	
+	@Override
+	public String toString() {
+		String resultat = "";
+		Iterator<T> it = oppramser();
+		while (it.hasNext()) {
+			resultat += it.next().toString() + "\t";
+		}
+		return resultat;
+	}
+
 
 }// class
