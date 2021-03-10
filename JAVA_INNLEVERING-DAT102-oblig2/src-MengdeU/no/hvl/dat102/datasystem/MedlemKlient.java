@@ -35,7 +35,7 @@ public class MedlemKlient {
 		System.out.println(lars.toString());
 		System.out.println(bodil.toString());
 		System.out.println(kari.toString());
-		System.out.println(bodil.toString());
+		System.out.println(xavier.toString());
 		System.out.println("******");
 		
 		System.out.println(bodil.passerTil(xavier));
