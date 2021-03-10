@@ -24,7 +24,7 @@ public class Medlem {
 		return this.getHobbyer().equals(medlem2.getHobbyer());
 	}
 
-	public String getNavn(String navn) {
+	public String getNavn() {
 		return navn;
 	}
 
