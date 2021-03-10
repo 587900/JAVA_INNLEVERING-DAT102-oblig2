@@ -3,14 +3,8 @@ package no.hvl.dat102.mengde;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-<<<<<<< HEAD
-import no.hvl.dat102.mengde.kjedet.*;
-import no.hvl.dat102.mengde.tabell.*;
-import o
-=======
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
->>>>>>> branch 'master' of https://github.com/587900/JAVA_INNLEVERING-DAT102-oblig2.git
 
 import no.hvl.dat102.mengde.adt.MengdeADT;
 
