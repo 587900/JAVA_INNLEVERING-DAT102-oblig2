@@ -7,7 +7,7 @@ public class Datasystemklient {
 	public static void main(String[] args) {
 		Scanner tastatur = new Scanner(System.in);
 		Datakontakt data = new Datakontakt();
-		Tekstgrensesnitt tekst = new Tekstgrensesnitt();
+		Tekstgrensesnitt tekst = new Tekstgrensesnitt(tastatur);
 		int input;
 		String navn;
 		do {
@@ -34,7 +34,7 @@ public class Datasystemklient {
 			case 4:
 				tekst.skrivParListe(data);
 			}
-			tastatur.close();
 		} while (input != 0);
+		tastatur.close();
 	}
 }

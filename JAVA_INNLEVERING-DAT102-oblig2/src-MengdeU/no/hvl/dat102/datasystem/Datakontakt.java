@@ -11,12 +11,13 @@ public class Datakontakt {
 
 	public Datakontakt(int antall) {
 		medlemstabell = new Medlem[antall];
-		antallMedlemmer = antall;
+		antallMedlemmer = 0;
 	}
 
 	public void leggTilMedlem(Medlem person) {
-		medlemstabell[antallMedlemmer] = person;
-		antallMedlemmer++;
+		if (antallMedlemmer >= medlemstabell.length) 
+			utvidTabell((int)Math.max(1, medlemstabell.length * 1.1)); 
+		medlemstabell[antallMedlemmer++] = person;
 	}
 
 	public Medlem[] getMedlemstabell() {
@@ -77,6 +78,13 @@ public class Datakontakt {
 		medlemstabell[indeks].setStatusIndeks(-1);
 		medlemstabell[match].setStatusIndeks(-1);
 
+	}
+	
+	public void utvidTabell(int med) {
+		if (med <= 0) return;
+		Medlem[] temp = new Medlem[medlemstabell.length+med];
+		for (int i = 0; i < medlemstabell.length; i++) temp[i] = medlemstabell[i];
+		medlemstabell = temp;
 	}
 
 }
