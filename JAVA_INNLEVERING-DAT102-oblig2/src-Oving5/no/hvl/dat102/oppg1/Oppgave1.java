@@ -1,4 +1,4 @@
-package no.hvl.dat102;
+package no.hvl.dat102.oppg1;
 
 public class Oppgave1 {
 	
