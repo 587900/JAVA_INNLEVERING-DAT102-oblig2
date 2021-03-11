@@ -10,11 +10,12 @@ public class Oppgave4 {
 		
 		IntegerGenerator intgen = new IntegerGenerator();
 		
-		long runtime1 = testSort(100, arr -> insertionSort(arr), intgen, Integer.class);
-		long runtime2 = testSort(100, arr -> selectionSort(arr), intgen, Integer.class);
-		long runtime3 = testSort(100, arr -> bubbleSort(arr), intgen, Integer.class);
-		long runtime4 = testSort(100, arr -> quickSort(arr), intgen, Integer.class);
-		//long runtime5 = testSort(100, arr -> mergeSort(arr), intgen, Integer.class);
+		long runtime1 = testSort(100, Oppgave4::insertionSort, intgen, Integer.class);
+		long runtime2 = testSort(100, Oppgave4::selectionSort, intgen, Integer.class);
+		long runtime3 = testSort(100, Oppgave4::bubbleSort, intgen, Integer.class);
+		long runtime4 = testSort(100, Oppgave4::quickSort, intgen, Integer.class);
+		//long runtime5 = testSort(100, Oppgave4::mergeSort, intgen, Integer.class);
+		
 		
 		System.out.println(runtime1 + " " + runtime2 + " " + runtime3 + " " + runtime4);
 		
