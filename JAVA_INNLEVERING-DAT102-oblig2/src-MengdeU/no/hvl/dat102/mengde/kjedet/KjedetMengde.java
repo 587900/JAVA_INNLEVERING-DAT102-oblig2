@@ -130,6 +130,7 @@ public class KjedetMengde<T> implements MengdeADT<T> {
 	 * @param m2 - Objektet som skal sammenliknes
 	 * @return true hvis de er like, false hvis ikke
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object m2) {
 

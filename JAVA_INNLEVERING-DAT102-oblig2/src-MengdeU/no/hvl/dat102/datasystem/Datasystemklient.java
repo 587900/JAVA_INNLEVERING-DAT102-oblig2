@@ -15,7 +15,7 @@ public class Datasystemklient {
 					+ "Skriv ut parliste (4) Avslutt (0)");
 
 			input = tastatur.nextInt();
-			String t = tastatur.nextLine();
+			tastatur.nextLine();
 
 			switch (input) {
 			case 1:

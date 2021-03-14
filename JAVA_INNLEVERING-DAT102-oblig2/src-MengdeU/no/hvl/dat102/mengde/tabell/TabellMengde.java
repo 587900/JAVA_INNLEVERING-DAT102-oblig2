@@ -1,5 +1,6 @@
 package no.hvl.dat102.mengde.tabell;
 
+import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -45,7 +46,9 @@ public class TabellMengde<T> implements MengdeADT<T> {
 	}
 
 	private void utvidKapasitet() {
-		T[] hjelpetabell = (T[]) (new Object[2 * tab.length]);
+		//T[] hjelpetabell = (T[]) (new Object[2 * tab.length]);
+		@SuppressWarnings("unchecked")
+		T[] hjelpetabell = (T[])Array.newInstance(tab.getClass().getComponentType(), 2 * tab.length);	//unngå type-erasure (då, Tab i constructor er av type Object, så dette er litt poengløst)
 		for (int i = 0; i < tab.length; i++) {
 			hjelpetabell[i] = tab[i];
 		}
@@ -109,6 +112,7 @@ public class TabellMengde<T> implements MengdeADT<T> {
 	 * @param m2 - Objektet som skal sammenliknes
 	 * @return true hvis de er like, false hvis ikke
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object m2) {
 		if (!(m2 instanceof MengdeADT<?>)) return false;

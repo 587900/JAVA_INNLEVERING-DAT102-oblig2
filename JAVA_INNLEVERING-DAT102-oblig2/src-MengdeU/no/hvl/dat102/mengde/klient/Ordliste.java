@@ -81,6 +81,8 @@ public class Ordliste {
 			System.out.println(hentStreng);
 
 		}
+		
+		tastatur.close();
 
 	}
 

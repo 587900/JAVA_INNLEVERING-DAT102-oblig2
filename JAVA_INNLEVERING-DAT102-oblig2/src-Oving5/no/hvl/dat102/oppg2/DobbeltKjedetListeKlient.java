@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class DobbeltKjedetListeKlient<T extends Comparable<T>> {
 	
-	static Scanner tastatur;
+	private static Scanner tastatur;
 
 	public static void main(String[] args) {
 		
@@ -13,7 +13,6 @@ public class DobbeltKjedetListeKlient<T extends Comparable<T>> {
 		while (true) {
 			System.out.println("Velkommen! Hvilken type data ønsker du å handtere? Støttede typer: STRING, INTEGER");
 			String choice = tastatur.nextLine().trim().toUpperCase();
-			String min, max;
 			switch (choice) {
 				case "INTEGER":
 					System.out.println("Du kan skrive MIN_VALUE eller MAX_VALUE for å få Integer.MIN_VALUE og Integer.MAX_VALUE");
