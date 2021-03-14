@@ -7,6 +7,8 @@ public class DobbelKjedetListeS<T extends Comparable<T>> {
 	
 	// Godkjenner ikke nullverdier
 	public DobbelKjedetListeS(T minVerdi, T maksVerdi) {
+		if (maksVerdi.compareTo(minVerdi) < 0) throw new IllegalArgumentException("minVerdi må vere mindre enn maksVerdi!");
+		
 		foerste = new DobbelNode<T>(minVerdi);
 		siste = new DobbelNode<T>(maksVerdi);
 		antall = 0;
